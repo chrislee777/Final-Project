@@ -1,33 +1,18 @@
 
 /**
- * Write a description of class MineSweeperGUI here.
+ * Creates a Minesweeper graphic user interface that allows user to interact with minesweeper game on screen
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @Derek Chen & Chris Lee
+ * @5/11/15
  */
 public class MineSweeperGUI
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    /** 
+     * add stuff later
+     * random comment
+     * */
+     
 
-    /**
-     * Constructor for objects of class MineSweeperGUI
-     */
-    public MineSweeperGUI()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
+    
+    
 }
