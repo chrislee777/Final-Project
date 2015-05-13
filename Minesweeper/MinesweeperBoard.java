@@ -50,7 +50,5 @@ public class MinesweeperBoard {
 		}
 		return a;
 	}
-	public int getValue(int row, int col){
-	    return display()[row][col];
-	   }
+
 }

@@ -27,6 +27,10 @@ public class MinesweeperGUI implements ActionListener{
     private int width;
     private int height;
     private int mines;
+    
+    private boolean first;
+    
+    private MinesweeperBoard logic;
 
     /**
      * Launch the application.
@@ -51,6 +55,7 @@ public class MinesweeperGUI implements ActionListener{
         width = 9;
         height = 9;
         mines = 10;
+        first = true;
         initialize();
     }
 
@@ -61,7 +66,7 @@ public class MinesweeperGUI implements ActionListener{
         //main frame
         frmMinesweeper = new JFrame();
         frmMinesweeper.setTitle("Minesweeper");
-        frmMinesweeper.setBounds(100, 100, 400, 400);
+        frmMinesweeper.setBounds(100, 100, 300, 300);
         frmMinesweeper.setLayout(new BorderLayout());
         frmMinesweeper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -82,7 +87,6 @@ public class MinesweeperGUI implements ActionListener{
 
         frmMinesweeper.add(grid,BorderLayout.CENTER);
 
-		
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
         frmMinesweeper.setJMenuBar(menuBar);
@@ -178,6 +182,19 @@ public class MinesweeperGUI implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-
+        
+        //action performed for tiles
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; c < tiles[0].length; c++){
+                if(e.getSource().equals(tiles[r][c])){
+                    //creates logic if the first button
+                    if(first){
+                        first = false;
+                        logic = new MinesweeperBoard(width,height,mines,r,c);
+                    }
+                    
+                }
+            }
+        }
     }
 }
