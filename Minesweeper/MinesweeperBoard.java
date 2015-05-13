@@ -1,4 +1,3 @@
-
 public class MinesweeperBoard {
 	private int[][] board;
 	public MinesweeperBoard(int width, int height, int mines, int row, int col)
