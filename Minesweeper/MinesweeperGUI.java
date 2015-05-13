@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
+import java.util.*;
+
 public class MinesweeperGUI implements ActionListener{
     private JFrame frmMinesweeper;
     private JToggleButton[][] tiles;
@@ -27,9 +29,9 @@ public class MinesweeperGUI implements ActionListener{
     private int width;
     private int height;
     private int mines;
-    
+
     private boolean first;
-    
+
     private MinesweeperBoard logic;
 
     /**
@@ -182,7 +184,7 @@ public class MinesweeperGUI implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        
+
         //action performed for tiles
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
@@ -192,12 +194,25 @@ public class MinesweeperGUI implements ActionListener{
                         first = false;
                         logic = new MinesweeperBoard(width,height,mines,r,c);
                     }
-                    tiles[r][c].setLabel(""+logic.getValue(r,c));
+                    
+                    //sets value of button
+                    if(logic.getValue(r,c) != 0){
+                        tiles[r][c].setText(""+logic.getValue(r,c));
+                    }
+                    else{
+                        //if the value is 0, selects all the zeroes on the board
+                        ArrayList<Integer> zero = logic.getSurrounding(r,c);
+                        
+                    }
+                    
+                    
+                    //makes button unselectable after clicked
                     if(!tiles[r][c].isSelected()){
                         tiles[r][c].setSelected(true);
                     }
                 }
             }
         }
+
     }
 }
