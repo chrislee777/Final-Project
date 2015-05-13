@@ -6,6 +6,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 
 import java.awt.*;
 import javax.swing.JButton;
@@ -19,9 +20,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
 
-public class MinesweeperGUI {
+public class MinesweeperGUI implements ActionListener{
 
 	private JFrame frmMinesweeper;
+	private JToggleButton[][] tiles;
+	private Container grid;
 	
 	private int width;
 	private int height;
@@ -57,14 +60,37 @@ public class MinesweeperGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//main frame
 		frmMinesweeper = new JFrame();
 		frmMinesweeper.setTitle("Minesweeper");
-		frmMinesweeper.setBounds(100, 100, 700, 454);
+		frmMinesweeper.setBounds(100, 100, 400, 400);
+		frmMinesweeper.setLayout(new BorderLayout());
 		frmMinesweeper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//grid for tiles
+		grid = new Container();
+		grid.setLayout(new GridLayout(9,9));
+		
+		//creating button grid
+		tiles = new JToggleButton[height][width];
+		for(int r = 0; r < tiles.length; r++){
+			for(int c = 0; c < tiles[0].length; c++){
+				tiles[r][c] = new JToggleButton();
+				tiles[r][c].addActionListener(this);
+				grid.add(tiles[r][c]);
+				
+			}
+		}
+		
+		frmMinesweeper.add(grid,BorderLayout.CENTER);
+		
+		
+		
+		//main menu bar
 		JMenuBar menuBar = new JMenuBar();
 		frmMinesweeper.setJMenuBar(menuBar);
 		
+		//game menu section
 		JMenu mnNewMenu = new JMenu("Game");
 		menuBar.add(mnNewMenu);
 		
@@ -92,6 +118,7 @@ public class MinesweeperGUI {
 		});
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
+		//mode menu section
 		JMenu mnMode = new JMenu("Mode");
 		menuBar.add(mnMode);
 		
@@ -131,11 +158,7 @@ public class MinesweeperGUI {
 		group.add(rdbtnmntmAdvancedx);
 		mnMode.add(rdbtnmntmAdvancedx);
 		
-		
-		
-		
-		
-		
+		//help menu section
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
@@ -146,11 +169,21 @@ public class MinesweeperGUI {
 			}
 		});
 		mnHelp.add(mntmAbout);
-		frmMinesweeper.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		//auto generated code that idk what it is so just let it stay here
+		//frmMinesweeper.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	}
 	
+	
+	//resets the game
 	public void restart(){
 		
 	
+	}
+
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
