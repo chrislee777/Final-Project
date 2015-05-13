@@ -192,7 +192,10 @@ public class MinesweeperGUI implements ActionListener{
                         first = false;
                         logic = new MinesweeperBoard(width,height,mines,r,c);
                     }
-                    
+                    tiles[r][c].setLabel(""+logic.getValue(r,c));
+                    if(!tiles[r][c].isSelected()){
+                        tiles[r][c].setSelected(true);
+                    }
                 }
             }
         }
