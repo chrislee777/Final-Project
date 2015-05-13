@@ -3,4 +3,6 @@ comment0.params=width\ height\ mines\ row\ col
 comment0.target=MinesweeperBoard(int,\ int,\ int,\ int,\ int)
 comment1.params=
 comment1.target=int[][]\ display()
-numComments=2
+comment2.params=row\ col
+comment2.target=int\ getValue(int,\ int)
+numComments=3
