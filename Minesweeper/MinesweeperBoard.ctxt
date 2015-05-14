@@ -5,6 +5,4 @@ comment1.params=
 comment1.target=int[][]\ display()
 comment2.params=row\ col
 comment2.target=int\ getValue(int,\ int)
-comment3.params=row\ col
-comment3.target=java.util.ArrayList\ showZero(int,\ int)
-numComments=4
+numComments=3

@@ -89,7 +89,7 @@ public class MinesweeperGUI implements ActionListener{
         }
 
         frmMinesweeper.add(grid,BorderLayout.CENTER);
-        
+
         //all menu stuff is auto generated
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -186,9 +186,9 @@ public class MinesweeperGUI implements ActionListener{
 
     // :(
     public void gameOver(){
-        
+
     }
-    
+
     //ACTION!!!
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
@@ -202,20 +202,23 @@ public class MinesweeperGUI implements ActionListener{
                         first = false;
                         logic = new MinesweeperBoard(width,height,mines,r,c);
                     }
-                    
+
                     //sets value of button
                     if(logic.getValue(r,c) != 0){
                         tiles[r][c].setText(""+logic.getValue(r,c));
                     }
                     else{
                         //if the value is 0, selects all the zeroes on the board
-                        ArrayList<Integer> temp = logic.showZero(r,c); //gets all the tiles to be selected
-                        for(int x = 0; x < temp.size()-1; x+=2){
-                            tiles[temp.get(x)][temp.get(x+1)].setSelected(true);
+                        for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
+                            for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
+                                tiles[row][col].setSelected(true);
+                                if(logic.getValue(row,col)!=0){
+                                    tiles[row][col].setText(""+logic.getValue(row,col));
+                                }
+                            }
                         }
                     }
-                    
-                    
+
                     //makes button unselectable after clicked
                     if(!tiles[r][c].isSelected()){
                         tiles[r][c].setSelected(true);
@@ -224,5 +227,29 @@ public class MinesweeperGUI implements ActionListener{
             }
         }
 
+    }
+
+    //returns true if there is an unclicked zero 
+    public boolean nearUnclickedZero(int row, int col){
+        boolean result = false;
+        for(int r = row-1; r <= row+1; r++){
+            for(int c = col-1; c <= col+1; c++){
+                if(logic.getValue(r,c)==0 && !tiles[r][c].isSelected()){
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void revealZero(int r, int c){
+        for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
+            for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
+                tiles[row][col].setSelected(true);
+                if(logic.getValue(row,col)!=0){
+                    tiles[row][col].setText(""+logic.getValue(row,col));
+                }
+            }
+        }
     }
 }
