@@ -65,7 +65,7 @@ public class MinesweeperGUI implements ActionListener{
      * Initialize the contents of the frame.
      */
     private void initialize() {
-        //main frame
+        //main frame (auto generated)
         frmMinesweeper = new JFrame();
         frmMinesweeper.setTitle("Minesweeper");
         frmMinesweeper.setBounds(100, 100, 300, 300);
@@ -82,13 +82,15 @@ public class MinesweeperGUI implements ActionListener{
             for(int c = 0; c < tiles[0].length; c++){
                 tiles[r][c] = new JToggleButton();
                 tiles[r][c].addActionListener(this);
+                tiles[r][c].setFocusPainted(false); //removes the blue border
                 grid.add(tiles[r][c]);
 
             }
         }
 
         frmMinesweeper.add(grid,BorderLayout.CENTER);
-
+        
+        //all menu stuff is auto generated
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
         frmMinesweeper.setJMenuBar(menuBar);
@@ -182,6 +184,12 @@ public class MinesweeperGUI implements ActionListener{
 
     }
 
+    // :(
+    public void gameOver(){
+        
+    }
+    
+    //ACTION!!!
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
 
@@ -201,8 +209,10 @@ public class MinesweeperGUI implements ActionListener{
                     }
                     else{
                         //if the value is 0, selects all the zeroes on the board
-                        ArrayList<Integer> zero = logic.getSurrounding(r,c);
-                        
+                        ArrayList<Integer> temp = logic.showZero(r,c); //gets all the tiles to be selected
+                        for(int x = 0; x < temp.size()-1; x+=2){
+                            tiles[temp.get(x)][temp.get(x+1)].setSelected(true);
+                        }
                     }
                     
                     

@@ -1,3 +1,4 @@
+import java.util.*;
 public class MinesweeperBoard {
     private int[][] board;
     public MinesweeperBoard(int width, int height, int mines, int row, int col)
@@ -51,8 +52,20 @@ public class MinesweeperBoard {
         return a;
     }
 
-	public int getValue(int row, int col){
-	    return display()[row][col];
-	   }
+    public int getValue(int row, int col){
+        return display()[row][col];
+    }
+       
+    public ArrayList<Integer> showZero(int row, int col){
+        ArrayList<Integer> tiles = new ArrayList<Integer>();
+        //test not legit
+        for(int r = Math.max(0,row -1); r <= Math.min(board.length-1,row +1); r++){
+            for(int c = Math.max(0,col -1); c <= Math.min(board[0].length-1,col +1); c++){
+                tiles.add(r);
+                tiles.add(c);
+            }
+        }
+        return tiles;
+    }
 
 }
