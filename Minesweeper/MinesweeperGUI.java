@@ -30,7 +30,7 @@ public class MinesweeperGUI implements ActionListener{
     private int height;
     private int mines;
 
-    private boolean first;
+    private boolean first; //first click pressed or not
 
     private MinesweeperBoard logic;
 
@@ -74,7 +74,7 @@ public class MinesweeperGUI implements ActionListener{
 
         //grid for tiles
         grid = new Container();
-        grid.setLayout(new GridLayout(9,9));
+        grid.setLayout(new GridLayout(height,width));
 
         //creating button grid
         tiles = new JToggleButton[height][width];
@@ -181,7 +181,32 @@ public class MinesweeperGUI implements ActionListener{
 
     //resets the game
     public void restart(){
+        frmMinesweeper.remove(grid); //removes grid from the frame
 
+        //grid for tiles
+        grid = new Container();
+        grid.setLayout(new GridLayout(height,width));
+
+        //creating button grid
+        tiles = new JToggleButton[height][width];
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; c < tiles[0].length; c++){
+                tiles[r][c] = new JToggleButton();
+                tiles[r][c].addActionListener(this);
+                tiles[r][c].setFocusPainted(false); //removes the blue border
+                grid.add(tiles[r][c]);
+
+            }
+        }
+
+        frmMinesweeper.add(grid,BorderLayout.CENTER); //adds it back to the frame
+        
+        //solution for manually refreshing the frame without needing to resize it
+        frmMinesweeper.invalidate();
+        frmMinesweeper.validate();
+        frmMinesweeper.repaint();
+
+        first = true; //makes it regenerate the board at actionPeformed
     }
 
     // :(
