@@ -1,7 +1,7 @@
 import java.util.*;
 public class MinesweeperBoard {
     private int[][] board;
-    //JASON IS STUPID AND PUT WIDTH AS ROWS AND HEIGHT AS COLUMN!!! CAUTION
+    //JASON PUT WIDTH AS ROWS AND HEIGHT AS COLUMN!!! CAUTION
     public MinesweeperBoard(int width, int height, int mines, int row, int col)
     {
         int w;

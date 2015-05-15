@@ -9,9 +9,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButtonMenuItem;
@@ -21,7 +23,7 @@ import java.awt.event.WindowEvent;
 
 import java.util.*;
 
-public class MinesweeperGUI implements ActionListener{
+public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     private JFrame frmMinesweeper;
     private JToggleButton[][] tiles;
     private Container grid;
@@ -82,6 +84,7 @@ public class MinesweeperGUI implements ActionListener{
             for(int c = 0; c < tiles[0].length; c++){
                 tiles[r][c] = new JToggleButton();
                 tiles[r][c].addActionListener(this);
+                tiles[r][c].addMouseListener(this);
                 tiles[r][c].setFocusPainted(false); //removes the blue border
                 grid.add(tiles[r][c]);
 
@@ -193,6 +196,7 @@ public class MinesweeperGUI implements ActionListener{
             for(int c = 0; c < tiles[0].length; c++){
                 tiles[r][c] = new JToggleButton();
                 tiles[r][c].addActionListener(this);
+                tiles[r][c].addMouseListener(this);
                 tiles[r][c].setFocusPainted(false); //removes the blue border
                 grid.add(tiles[r][c]);
 
@@ -200,7 +204,7 @@ public class MinesweeperGUI implements ActionListener{
         }
 
         frmMinesweeper.add(grid,BorderLayout.CENTER); //adds it back to the frame
-        
+
         //solution for manually refreshing the frame without needing to resize it
         frmMinesweeper.invalidate();
         frmMinesweeper.validate();
@@ -230,7 +234,9 @@ public class MinesweeperGUI implements ActionListener{
 
                     //sets value of button
                     if(logic.getValue(r,c) != 0){
-                        tiles[r][c].setText(""+logic.getValue(r,c));
+                        if(!tiles[r][c].getText().equals("F")){
+                            tiles[r][c].setText(""+logic.getValue(r,c));
+                        }
                     }
                     else{
                         //if the value is 0, selects all the zeroes on the board
@@ -269,7 +275,9 @@ public class MinesweeperGUI implements ActionListener{
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
                     tiles[row][col].setSelected(true);
                     if(logic.getValue(row,col)!=0){
-                        tiles[row][col].setText(""+logic.getValue(row,col));
+                        if(!tiles[row][col].getText().equals("F")){
+                            tiles[row][col].setText(""+logic.getValue(row,col));
+                        }
                     }
                 }
             }
@@ -287,6 +295,23 @@ public class MinesweeperGUI implements ActionListener{
                 else{
                     if(logic.getValue(row,col)==0){
                         revealZero(row,col); //if no zeroes are unselected but still surrounding stuff is unchosen
+                    }
+                }
+            }
+        }
+    }
+
+    //mouse
+    public void mouseClicked(MouseEvent e){
+        //right click
+        if(e.getButton() == MouseEvent.BUTTON3){
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c])){
+                        if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
+                            tiles[r][c].setText("F");
+                            tiles[r][c].setEnabled(false);
+                        }
                     }
                 }
             }
