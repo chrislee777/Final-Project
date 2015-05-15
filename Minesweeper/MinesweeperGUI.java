@@ -209,14 +209,7 @@ public class MinesweeperGUI implements ActionListener{
                     }
                     else{
                         //if the value is 0, selects all the zeroes on the board
-                        for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
-                            for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
-                                tiles[row][col].setSelected(true);
-                                if(logic.getValue(row,col)!=0){
-                                    tiles[row][col].setText(""+logic.getValue(row,col));
-                                }
-                            }
-                        }
+                        finalShowZero(r,c);
                     }
 
                     //makes button unselectable after clicked
@@ -232,22 +225,44 @@ public class MinesweeperGUI implements ActionListener{
     //returns true if there is an unclicked zero 
     public boolean nearUnclickedZero(int row, int col){
         boolean result = false;
-        for(int r = row-1; r <= row+1; r++){
-            for(int c = col-1; c <= col+1; c++){
-                if(logic.getValue(r,c)==0 && !tiles[r][c].isSelected()){
-                    result = true;
+        if(logic.getValue(row,col)==0){
+            for(int r = Math.max(0,row -1); r <= Math.min(height-1,row+1); r++){
+                for(int c = Math.max(0,col-1); c <= Math.min(width-1,col+1); c++){
+                    if(logic.getValue(r,c)==0 && !tiles[r][c].isSelected()){
+                        result = true;
+                    }
                 }
             }
         }
         return result;
     }
 
+    //reveals 3v3 around a zero
     public void revealZero(int r, int c){
+        if(logic.getValue(r,c)==0){
+            for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
+                for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
+                    tiles[row][col].setSelected(true);
+                    if(logic.getValue(row,col)!=0){
+                        tiles[row][col].setText(""+logic.getValue(row,col));
+                    }
+                }
+            }
+        }
+    }
+
+    //reveals all the surrounding zeros
+    public void finalShowZero(int r, int c){
+        revealZero(r,c);
         for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
             for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
-                tiles[row][col].setSelected(true);
-                if(logic.getValue(row,col)!=0){
-                    tiles[row][col].setText(""+logic.getValue(row,col));
+                if(nearUnclickedZero(row,col)){
+                    finalShowZero(row,col); //RECURSION!!!
+                }
+                else{
+                    if(logic.getValue(row,col)==0){
+                        revealZero(row,col); //if no zeroes are unselected but still surrounding stuff is unchosen
+                    }
                 }
             }
         }
