@@ -225,7 +225,7 @@ public class MinesweeperGUI implements ActionListener{
                     //creates logic if the first button
                     if(first){
                         first = false;
-                        logic = new MinesweeperBoard(width,height,mines,r,c);
+                        logic = new MinesweeperBoard(height,width,mines,r,c);
                     }
 
                     //sets value of button
