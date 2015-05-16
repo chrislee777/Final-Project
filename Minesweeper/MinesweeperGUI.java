@@ -31,6 +31,7 @@ public class MinesweeperGUI implements ActionListener{
     private int mines;
 
     private boolean first; //first click pressed or not
+    private boolean over; //game over or not
 
     private MinesweeperBoard logic;
 
@@ -58,6 +59,7 @@ public class MinesweeperGUI implements ActionListener{
         height = 9;
         mines = 10;
         first = true;
+        over = false;
         initialize();
     }
 
@@ -200,51 +202,81 @@ public class MinesweeperGUI implements ActionListener{
         }
 
         frmMinesweeper.add(grid,BorderLayout.CENTER); //adds it back to the frame
-        
+
         //solution for manually refreshing the frame without needing to resize it
         frmMinesweeper.invalidate();
         frmMinesweeper.validate();
         frmMinesweeper.repaint();
 
         first = true; //makes it regenerate the board at actionPeformed
+        over = false;
     }
 
     // :(
     public void gameOver(){
-
+        over = true;
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; c < tiles[0].length; c++){
+                if(logic.getValue(r,c) == 9){
+                    tiles[r][c].setSelected(true);
+                    tiles[r][c].setText("X");
+                }
+            }
+        }
     }
 
     //ACTION!!!
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
+        if(!over){
+            //action performed for tiles
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c])){
+                        //creates logic if the first button
+                        if(first){
+                            first = false;
+                            logic = new MinesweeperBoard(height,width,mines,r,c);
+                        }
 
-        //action performed for tiles
-        for(int r = 0; r < tiles.length; r++){
-            for(int c = 0; c < tiles[0].length; c++){
-                if(e.getSource().equals(tiles[r][c])){
-                    //creates logic if the first button
-                    if(first){
-                        first = false;
-                        logic = new MinesweeperBoard(height,width,mines,r,c);
-                    }
+                        //sets value of button
+                        if(logic.getValue(r,c) == 9){
+                            tiles[r][c].setText("X");
+                            tiles[r][c].setContentAreaFilled(false);
+                            tiles[r][c].setBackground(Color.RED);
+                            tiles[r][c].setOpaque(true);
+                            gameOver();
+                        }
+                        else if(logic.getValue(r,c) != 0){
+                            tiles[r][c].setText(""+logic.getValue(r,c));
+                        }
+                        else{
+                            //if the value is 0, selects all the zeroes on the board
+                            finalShowZero(r,c);
+                        }
 
-                    //sets value of button
-                    if(logic.getValue(r,c) != 0){
-                        tiles[r][c].setText(""+logic.getValue(r,c));
-                    }
-                    else{
-                        //if the value is 0, selects all the zeroes on the board
-                        finalShowZero(r,c);
-                    }
-
-                    //makes button unselectable after clicked
-                    if(!tiles[r][c].isSelected()){
-                        tiles[r][c].setSelected(true);
+                        //makes button unselectable after clicked
+                        if(!tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(true);
+                        }
                     }
                 }
             }
         }
-
+        else{ //makes button unchangable at game over
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c])){
+                        if(tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(false);
+                        }
+                        else if(!tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(true);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //returns true if there is an unclicked zero 
