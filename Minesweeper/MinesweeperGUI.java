@@ -31,11 +31,14 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     private JButton reset;
     private JLabel timerLabel;
     private Timer timer;
+    private JLabel mineLabel;
+    private Container info;
 
     private int width;
     private int height;
     private int mines;
     private int time;
+    private int numMines;
 
     private boolean first; //first click pressed or not
     private boolean over; //game over or not
@@ -66,6 +69,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         height = 9;
         mines = 10;
         time = 0;
+        numMines = 0;
         first = true;
         over = false;
         initialize();
@@ -110,10 +114,13 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             });
         reset.setFocusPainted(false);
         frmMinesweeper.add(reset,BorderLayout.NORTH);
+        
+        info = new Container();
+        info.setLayout(new BorderLayout());
 
         //Timer labe
         timerLabel = new JLabel("Timer: 0");
-        frmMinesweeper.add(timerLabel,BorderLayout.SOUTH);
+        info.add(timerLabel,BorderLayout.WEST);
 
         //timer
         timer = new Timer(1000,new ActionListener(){
@@ -122,7 +129,13 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                     timerLabel.setText("Timer: " + time);
                 }
             });
-
+            
+        //Mine Label
+        mineLabel = new JLabel("Mines: " + numMines + "/" + mines);
+        info.add(mineLabel,BorderLayout.EAST);
+        
+        frmMinesweeper.add(info,BorderLayout.SOUTH);
+        
         //all menu stuff is auto generated
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -244,7 +257,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         over = false;
         timer.stop();
         time = 0;
-        
+        numMines = 0;
     }
 
     // :(
@@ -380,16 +393,19 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                         if(!first && tiles[r][c].getText().equals("F")){
                             tiles[r][c].setText("");
                             //tiles[r][c].setEnabled(true);
+                            numMines--;
                         }
                         else if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
                             tiles[r][c].setText("F");
                             //tiles[r][c].setEnabled(false);
+                            numMines++;
                         }
 
                     }
                 }
             }
         }
+        mineLabel.setText("Mines: " + numMines + "/" + mines);
     }
 
     //if user clicks on a number, quickly reveals surrounding buttons
