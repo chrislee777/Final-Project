@@ -114,7 +114,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             });
         reset.setFocusPainted(false);
         frmMinesweeper.add(reset,BorderLayout.NORTH);
-        
+
         info = new Container();
         info.setLayout(new BorderLayout());
 
@@ -129,13 +129,13 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                     timerLabel.setText("Timer: " + time);
                 }
             });
-            
+
         //Mine Label
         mineLabel = new JLabel("Mines: " + numMines + "/" + mines);
         info.add(mineLabel,BorderLayout.EAST);
-        
+
         frmMinesweeper.add(info,BorderLayout.SOUTH);
-        
+
         //all menu stuff is auto generated
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -386,21 +386,23 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     //mouse
     public void mouseClicked(MouseEvent e){
         //right click
-        if(e.getButton() == MouseEvent.BUTTON3){
-            for(int r = 0; r < tiles.length; r++){
-                for(int c = 0; c < tiles[0].length; c++){
-                    if(e.getSource().equals(tiles[r][c])){
-                        if(!first && tiles[r][c].getText().equals("F")){
-                            tiles[r][c].setText("");
-                            //tiles[r][c].setEnabled(true);
-                            numMines--;
-                        }
-                        else if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
-                            tiles[r][c].setText("F");
-                            //tiles[r][c].setEnabled(false);
-                            numMines++;
-                        }
+        if(!over){
+            if(e.getButton() == MouseEvent.BUTTON3){
+                for(int r = 0; r < tiles.length; r++){
+                    for(int c = 0; c < tiles[0].length; c++){
+                        if(e.getSource().equals(tiles[r][c])){
+                            if(!first && tiles[r][c].getText().equals("F")){
+                                tiles[r][c].setText("");
+                                //tiles[r][c].setEnabled(true);
+                                numMines--;
+                            }
+                            else if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
+                                tiles[r][c].setText("F");
+                                //tiles[r][c].setEnabled(false);
+                                numMines++;
+                            }
 
+                        }
                     }
                 }
             }
@@ -415,7 +417,10 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
                     if(!tiles[row][col].getText().equals("F")){
-                        if(logic.getValue(row,col)!=0){
+                        if(logic.getValue(row,col) == 9){
+                            gameOver();
+                        }
+                        else if(logic.getValue(row,col)!=0){
                             tiles[row][col].setText(""+logic.getValue(row,col));
                             tiles[row][col].setSelected(true);
                         }
