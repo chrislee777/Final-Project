@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,10 +28,14 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     private JFrame frmMinesweeper;
     private JToggleButton[][] tiles;
     private Container grid;
+    private JButton reset;
+    private JLabel timerLabel;
+    private Timer timer;
 
     private int width;
     private int height;
     private int mines;
+    private int time;
 
     private boolean first; //first click pressed or not
     private boolean over; //game over or not
@@ -60,6 +65,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         width = 9;
         height = 9;
         mines = 10;
+        time = 0;
         first = true;
         over = false;
         initialize();
@@ -96,7 +102,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         frmMinesweeper.add(grid,BorderLayout.CENTER);
 
         //reset button
-        JButton reset = new JButton("Reset");
+        reset = new JButton("Reset");
         reset.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     restart();
@@ -104,6 +110,18 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             });
         reset.setFocusPainted(false);
         frmMinesweeper.add(reset,BorderLayout.NORTH);
+
+        //Timer labe
+        timerLabel = new JLabel("Timer: 0");
+        frmMinesweeper.add(timerLabel,BorderLayout.SOUTH);
+
+        //timer
+        timer = new Timer(1000,new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    time++;
+                    timerLabel.setText("Timer: " + time);
+                }
+            });
 
         //all menu stuff is auto generated
         //main menu bar
@@ -224,6 +242,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
         first = true; //makes it regenerate the board at actionPeformed
         over = false;
+        timer.stop();
+        time = 0;
+        
     }
 
     // :(
@@ -237,6 +258,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 }
             }
         }
+        timer.stop();
     }
 
     //ACTION!!!
@@ -254,6 +276,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                         if(first){
                             first = false;
                             logic = new MinesweeperBoard(height,width,mines,r,c);
+                            timer.start(); //starts the timer
                         }
 
                         //sets value of button
