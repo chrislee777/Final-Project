@@ -7,11 +7,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButtonMenuItem;
@@ -21,16 +24,24 @@ import java.awt.event.WindowEvent;
 
 import java.util.*;
 
-public class MinesweeperGUI implements ActionListener{
+public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     private JFrame frmMinesweeper;
     private JToggleButton[][] tiles;
     private Container grid;
+    private JButton reset;
+    private JLabel timerLabel;
+    private Timer timer;
+    private JLabel mineLabel;
+    private Container info;
 
     private int width;
     private int height;
     private int mines;
+    private int time;
+    private int numMines;
 
     private boolean first; //first click pressed or not
+    private boolean over; //game over or not
 
     private MinesweeperBoard logic;
 
@@ -57,7 +68,10 @@ public class MinesweeperGUI implements ActionListener{
         width = 9;
         height = 9;
         mines = 10;
+        time = 0;
+        numMines = 0;
         first = true;
+        over = false;
         initialize();
     }
 
@@ -82,6 +96,7 @@ public class MinesweeperGUI implements ActionListener{
             for(int c = 0; c < tiles[0].length; c++){
                 tiles[r][c] = new JToggleButton();
                 tiles[r][c].addActionListener(this);
+                tiles[r][c].addMouseListener(this);
                 tiles[r][c].setFocusPainted(false); //removes the blue border
                 grid.add(tiles[r][c]);
 
@@ -90,6 +105,37 @@ public class MinesweeperGUI implements ActionListener{
 
         frmMinesweeper.add(grid,BorderLayout.CENTER);
 
+        //reset button
+        reset = new JButton("Reset");
+        reset.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    restart();
+                }
+            });
+        reset.setFocusPainted(false);
+        frmMinesweeper.add(reset,BorderLayout.NORTH);
+        
+        info = new Container();
+        info.setLayout(new BorderLayout());
+
+        //Timer labe
+        timerLabel = new JLabel("Timer: 0");
+        info.add(timerLabel,BorderLayout.WEST);
+
+        //timer
+        timer = new Timer(1000,new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    time++;
+                    timerLabel.setText("Timer: " + time);
+                }
+            });
+            
+        //Mine Label
+        mineLabel = new JLabel("Mines: " + numMines + "/" + mines);
+        info.add(mineLabel,BorderLayout.EAST);
+        
+        frmMinesweeper.add(info,BorderLayout.SOUTH);
+        
         //all menu stuff is auto generated
         //main menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -193,6 +239,7 @@ public class MinesweeperGUI implements ActionListener{
             for(int c = 0; c < tiles[0].length; c++){
                 tiles[r][c] = new JToggleButton();
                 tiles[r][c].addActionListener(this);
+                tiles[r][c].addMouseListener(this);
                 tiles[r][c].setFocusPainted(false); //removes the blue border
                 grid.add(tiles[r][c]);
 
@@ -200,52 +247,97 @@ public class MinesweeperGUI implements ActionListener{
         }
 
         frmMinesweeper.add(grid,BorderLayout.CENTER); //adds it back to the frame
-        
+
         //solution for manually refreshing the frame without needing to resize it
         frmMinesweeper.invalidate();
         frmMinesweeper.validate();
         frmMinesweeper.repaint();
 
         first = true; //makes it regenerate the board at actionPeformed
+        over = false;
+        timer.stop();
+        time = 0;
+        numMines = 0;
     }
 
     // :(
     public void gameOver(){
+<<<<<<< HEAD
         
         
+=======
+        over = true;
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; c < tiles[0].length; c++){
+                if(logic.getValue(r,c) == 9){
+                    tiles[r][c].setSelected(true);
+                    tiles[r][c].setText("X");
+                }
+            }
+        }
+        timer.stop();
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
     }
 
     //ACTION!!!
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-
-        //action performed for tiles
-        for(int r = 0; r < tiles.length; r++){
-            for(int c = 0; c < tiles[0].length; c++){
-                if(e.getSource().equals(tiles[r][c])){
-                    //creates logic if the first button
-                    if(first){
-                        first = false;
-                        logic = new MinesweeperBoard(height,width,mines,r,c);
+        if(!over){
+            //action performed for tiles
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c]) && !tiles[r][c].isSelected()){// reveals mines
+                        quickShow(r,c);
                     }
+                    else if(e.getSource().equals(tiles[r][c]) && !tiles[r][c].getText().equals("F")){ // shows number
+                        //creates logic if the first button
+                        if(first){
+                            first = false;
+                            logic = new MinesweeperBoard(height,width,mines,r,c);
+                            timer.start(); //starts the timer
+                        }
 
-                    //sets value of button
-                    if(logic.getValue(r,c) != 0){
-                        tiles[r][c].setText(""+logic.getValue(r,c));
-                    }
-                    else{
-                        //if the value is 0, selects all the zeroes on the board
-                        finalShowZero(r,c);
-                    }
+                        //sets value of button
+                        if(logic.getValue(r,c) == 9){
+                            tiles[r][c].setText("X");
+                            tiles[r][c].setContentAreaFilled(false);
+                            tiles[r][c].setBackground(Color.RED);
+                            tiles[r][c].setOpaque(true);
+                            gameOver();
+                        }
+                        else if(logic.getValue(r,c) != 0){
+                            tiles[r][c].setText(""+logic.getValue(r,c));
+                        }
+                        else{
+                            //if the value is 0, selects all the zeroes on the board
+                            finalShowZero(r,c);
+                        }
 
-                    //makes button unselectable after clicked
-                    if(!tiles[r][c].isSelected()){
-                        tiles[r][c].setSelected(true);
+                        //makes button unselectable after clicked
+                        if(!tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(true);
+                        }
+                    }
+                    else if(e.getSource().equals(tiles[r][c])){ // makes flags unclickable
+                        tiles[r][c].setSelected(false);
                     }
                 }
             }
         }
-
+        else{ //makes button unchangable at game over
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c])){
+                        if(tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(false);
+                        }
+                        else if(!tiles[r][c].isSelected()){
+                            tiles[r][c].setSelected(true);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //returns true if there is an unclicked zero 
@@ -270,7 +362,9 @@ public class MinesweeperGUI implements ActionListener{
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
                     tiles[row][col].setSelected(true);
                     if(logic.getValue(row,col)!=0){
-                        tiles[row][col].setText(""+logic.getValue(row,col));
+                        if(!tiles[row][col].getText().equals("F")){
+                            tiles[row][col].setText(""+logic.getValue(row,col));
+                        }
                     }
                 }
             }
@@ -292,5 +386,66 @@ public class MinesweeperGUI implements ActionListener{
                 }
             }
         }
+    }
+
+    //mouse
+    public void mouseClicked(MouseEvent e){
+        //right click
+        if(e.getButton() == MouseEvent.BUTTON3){
+            for(int r = 0; r < tiles.length; r++){
+                for(int c = 0; c < tiles[0].length; c++){
+                    if(e.getSource().equals(tiles[r][c])){
+                        if(!first && tiles[r][c].getText().equals("F")){
+                            tiles[r][c].setText("");
+                            //tiles[r][c].setEnabled(true);
+                            numMines--;
+                        }
+                        else if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
+                            tiles[r][c].setText("F");
+                            //tiles[r][c].setEnabled(false);
+                            numMines++;
+                        }
+
+                    }
+                }
+            }
+        }
+        mineLabel.setText("Mines: " + numMines + "/" + mines);
+    }
+
+    //if user clicks on a number, quickly reveals surrounding buttons
+    public void quickShow(int r, int c){
+        int flags = logic.getValue(r,c);
+        if(surroundingFlags(r,c) == flags){
+            for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
+                for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
+                    if(!tiles[row][col].getText().equals("F")){
+                        if(logic.getValue(row,col)!=0){
+                            tiles[row][col].setText(""+logic.getValue(row,col));
+                            tiles[row][col].setSelected(true);
+                        }
+                        else{
+                            finalShowZero(row,col);
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            tiles[r][c].setSelected(true);
+        }
+    }
+
+    //gives surrounding number of flags
+    public int surroundingFlags(int r, int c){
+        int counter = 0;
+        for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
+            for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
+                if(tiles[row][col].getText().equals("F")){
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 }

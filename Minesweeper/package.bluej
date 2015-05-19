@@ -5,9 +5,15 @@ dependency1.type=UsesDependency
 objectbench.height=100
 objectbench.width=666
 package.editor.height=400
+<<<<<<< HEAD
 package.editor.width=869
 package.editor.x=566
 package.editor.y=614
+=======
+package.editor.width=568
+package.editor.x=167
+package.editor.y=29
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
 package.numDependencies=1
 package.numTargets=4
 package.showExtends=true
@@ -19,17 +25,27 @@ target1.editor.x=313
 target1.editor.y=311
 target1.height=50
 target1.name=FileWrite
+<<<<<<< HEAD
 target1.naviview.expanded=false
+=======
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
 target1.width=80
 target1.x=180
 target1.y=10
+<<<<<<< HEAD
 target2.editor.height=700
 target2.editor.width=900
 target2.editor.x=730
 target2.editor.y=311
+=======
+target2.editor.height=788
+target2.editor.width=1104
+target2.editor.x=232
+target2.editor.y=74
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
 target2.height=50
 target2.name=TextFileTest
 target2.naviview.expanded=false
@@ -38,17 +54,26 @@ target2.type=ClassTarget
 target2.typeParameters=
 target2.width=100
 target2.x=70
+<<<<<<< HEAD
 target2.y=10
 target3.editor.height=874
 target3.editor.width=1104
 target3.editor.x=232
 target3.editor.y=74
+=======
+target2.y=70
+target3.editor.height=662
+target3.editor.width=889
+target3.editor.x=303
+target3.editor.y=45
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
 target3.height=50
 target3.name=MinesweeperBoard
 target3.naviview.expanded=false
 target3.showInterface=false
 target3.type=ClassTarget
 target3.typeParameters=
+<<<<<<< HEAD
 target3.width=140
 target3.x=70
 target3.y=70
@@ -65,3 +90,16 @@ target4.typeParameters=
 target4.width=130
 target4.x=10
 target4.y=130
+=======
+target3.width=130
+target3.x=10
+target3.y=130
+target4.height=50
+target4.name=TextFileTest
+target4.showInterface=false
+target4.type=ClassTarget
+target4.typeParameters=
+target4.width=100
+target4.x=70
+target4.y=10
+>>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
