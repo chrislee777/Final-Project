@@ -262,10 +262,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     // :(
     public void gameOver(){
-<<<<<<< HEAD
-        
-        
-=======
+
         over = true;
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
@@ -276,7 +273,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             }
         }
         timer.stop();
->>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
+
     }
 
     //ACTION!!!
