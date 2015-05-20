@@ -21,6 +21,7 @@ import javax.swing.JRadioButtonMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 
 import java.util.*;
 
@@ -42,6 +43,8 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     private boolean first; //first click pressed or not
     private boolean over; //game over or not
+    
+    private ImageIcon flag;
 
     private MinesweeperBoard logic;
 
@@ -135,6 +138,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         info.add(mineLabel,BorderLayout.EAST);
 
         frmMinesweeper.add(info,BorderLayout.SOUTH);
+        
+        //icons
+        flag = new ImageIcon(getClass().getResource("/images/flag.png"));
 
         //all menu stuff is auto generated
         //main menu bar
@@ -262,10 +268,6 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     // :(
     public void gameOver(){
-<<<<<<< HEAD
-        
-        
-=======
         over = true;
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
@@ -276,7 +278,6 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             }
         }
         timer.stop();
->>>>>>> 2624a3772fa21722c465605b00aa325cb41c2a8d
     }
 
     //ACTION!!!
@@ -289,7 +290,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                     if(e.getSource().equals(tiles[r][c]) && !tiles[r][c].isSelected()){// reveals mines
                         quickShow(r,c);
                     }
-                    else if(e.getSource().equals(tiles[r][c]) && !tiles[r][c].getText().equals("F")){ // shows number
+                    else if(e.getSource().equals(tiles[r][c]) && tiles[r][c].getIcon()==null){ //!tiles[r][c].getIcon().equals(flag)) // shows number
                         //creates logic if the first button
                         if(first){
                             first = false;
@@ -362,7 +363,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
                     tiles[row][col].setSelected(true);
                     if(logic.getValue(row,col)!=0){
-                        if(!tiles[row][col].getText().equals("F")){
+                        if(tiles[row][col].getIcon()==null       /*!tiles[row][col].getIcon().equals(flag)*/){
                             tiles[row][col].setText(""+logic.getValue(row,col));
                         }
                     }
@@ -396,13 +397,13 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 for(int r = 0; r < tiles.length; r++){
                     for(int c = 0; c < tiles[0].length; c++){
                         if(e.getSource().equals(tiles[r][c])){
-                            if(!first && tiles[r][c].getText().equals("F")){
-                                tiles[r][c].setText("");
+                            if(!first && tiles[r][c].getIcon() != null /*tiles[r][c].getIcon().equals(flag)*/){
+                                tiles[r][c].setIcon(null);
                                 //tiles[r][c].setEnabled(true);
                                 numMines--;
                             }
                             else if(!tiles[r][c].isSelected() && !first){ //if not selected and not first move
-                                tiles[r][c].setText("F");
+                                tiles[r][c].setIcon(flag);
                                 //tiles[r][c].setEnabled(false);
                                 numMines++;
                             }
@@ -413,6 +414,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             }
         }
         mineLabel.setText("Mines: " + numMines + "/" + mines);
+        if(numMines == mines){
+            checkWin();
+        }
     }
 
     //if user clicks on a number, quickly reveals surrounding buttons
@@ -421,7 +425,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         if(surroundingFlags(r,c) == flags){
             for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
-                    if(!tiles[row][col].getText().equals("F")){
+                    if(tiles[row][col].getIcon() == null /*!tiles[row][col].getIcon().equals(flag)*/){
                         if(logic.getValue(row,col) == 9){
                             gameOver();
                         }
@@ -446,11 +450,29 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         int counter = 0;
         for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
             for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
-                if(tiles[row][col].getText().equals("F")){
+                if(tiles[row][col].getIcon() != null /*tiles[row][col].getIcon().equals(flag)*/){
                     counter++;
                 }
             }
         }
         return counter;
+    }
+    
+    public void checkWin(){
+        boolean win = true;
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; r < tiles[0].length; c++){
+                if(tiles[r][c].getIcon() != null){
+                    if(tiles[r][c].getIcon().equals(flag)){
+                        if(logic.getValue(r,c) != 9){
+                            win = false;
+                        }
+                    }
+                }
+            }
+        }
+        if(win){
+            restart();
+        }
     }
 }
