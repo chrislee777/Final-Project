@@ -45,6 +45,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     private boolean over; //game over or not
 
     private ImageIcon flag;
+    private ImageIcon mineIcon;
+    private ImageIcon wrongMine;
+    private ImageIcon flagMine;
 
     private MinesweeperBoard logic;
 
@@ -142,6 +145,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
         //icons
         flag = new ImageIcon(getClass().getResource("/images/flag.png"));
+        mineIcon = new ImageIcon(getClass().getResource("/images/mine.png"));
+        wrongMine = new ImageIcon(getClass().getResource("/images/redMine.png"));
+        flagMine = new ImageIcon(getClass().getResource("/images/wrongMine.png"));
 
         //all menu stuff is auto generated
         //main menu bar
@@ -273,8 +279,14 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
                 if(logic.getValue(r,c) == 9){
-                    tiles[r][c].setSelected(true);
-                    tiles[r][c].setText("X");
+                    
+                    if(tiles[r][c].getIcon() != null){
+                    }
+                    else{
+                        tiles[r][c].setIcon(mineIcon);
+                        tiles[r][c].setSelected(true);
+                    }
+
                 }
             }
         }
@@ -301,10 +313,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
                         //sets value of button
                         if(logic.getValue(r,c) == 9){
-                            tiles[r][c].setText("X");
-                            tiles[r][c].setContentAreaFilled(false);
-                            tiles[r][c].setBackground(Color.RED);
-                            tiles[r][c].setOpaque(true);
+                            resizeIcons();
+                            tiles[r][c].setIcon(wrongMine);
+                            tiles[r][c].setSelected(true);
                             gameOver();
                         }
                         else if(logic.getValue(r,c) != 0){
@@ -428,6 +439,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
                     if(tiles[row][col].getIcon() == null /*!tiles[row][col].getIcon().equals(flag)*/){
                         if(logic.getValue(row,col) == 9){
+                            //resizeIcons();
+                            tiles[row][col].setIcon(wrongMine);
+                            tiles[row][col].setSelected(true);
                             gameOver();
                         }
                         else if(logic.getValue(row,col)!=0){
@@ -436,6 +450,14 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                         }
                         else{
                             finalShowZero(row,col);
+                        }
+                    }
+                    else{
+                        if(logic.getValue(row,col) != 9){
+                            //resizeIcons();
+                            tiles[row][col].setIcon(flagMine);
+                            tiles[row][col].setSelected(true);
+                            gameOver();
                         }
                     }
                 }
@@ -484,6 +506,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     }
 
     public void resizeIcons(){
+        //http://www.coderanch.com/t/331731/GUI/java/Resize-ImageIcon
         Image img = flag.getImage() ;  
         Image newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;  
         flag = new ImageIcon( newimg );
@@ -494,5 +517,19 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 }
             }
         }
+
+        img = mineIcon.getImage() ; 
+        newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;
+        mineIcon = new ImageIcon( newimg );
+
+        img = wrongMine.getImage() ; 
+        newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;
+        wrongMine = new ImageIcon( newimg );
+
+        img = flagMine.getImage() ; 
+        newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;
+        flagMine = new ImageIcon( newimg );
+        
+        
     }
 }
