@@ -43,7 +43,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     private boolean first; //first click pressed or not
     private boolean over; //game over or not
-    
+
     private ImageIcon flag;
 
     private MinesweeperBoard logic;
@@ -85,7 +85,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         //main frame (auto generated)
         frmMinesweeper = new JFrame();
         frmMinesweeper.setTitle("Minesweeper");
-        frmMinesweeper.setBounds(100, 100, 300, 300);
+        frmMinesweeper.setBounds(100, 100, 500, 550);
         frmMinesweeper.setLayout(new BorderLayout());
         frmMinesweeper.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -130,6 +130,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                 public void actionPerformed(ActionEvent e){
                     time++;
                     timerLabel.setText("Timer: " + time);
+                    resizeIcons();
                 }
             });
 
@@ -138,7 +139,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         info.add(mineLabel,BorderLayout.EAST);
 
         frmMinesweeper.add(info,BorderLayout.SOUTH);
-        
+
         //icons
         flag = new ImageIcon(getClass().getResource("/images/flag.png"));
 
@@ -457,11 +458,11 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         }
         return counter;
     }
-    
+
     public void checkWin(){
         boolean win = true;
         for(int r = 0; r < tiles.length; r++){
-            for(int c = 0; r < tiles[0].length; c++){
+            for(int c = 0; c < tiles[0].length; c++){
                 if(tiles[r][c].getIcon() != null){
                     if(tiles[r][c].getIcon().equals(flag)){
                         if(logic.getValue(r,c) != 9){
@@ -469,10 +470,29 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                         }
                     }
                 }
+                else{
+                    if(!tiles[r][c].isSelected()){
+                        win = false;
+                    }
+                }
             }
         }
         if(win){
+            JOptionPane.showMessageDialog(null, "You win!!!");
             restart();
+        }
+    }
+
+    public void resizeIcons(){
+        Image img = flag.getImage() ;  
+        Image newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;  
+        flag = new ImageIcon( newimg );
+        for(int r = 0; r < tiles.length; r++){
+            for(int c = 0; c < tiles[0].length; c++){
+                if(tiles[r][c].getIcon() != null){
+                    tiles[r][c].setIcon(flag);
+                }
+            }
         }
     }
 }
