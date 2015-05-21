@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.params=args
 comment0.target=void\ main(java.lang.String[])
-comment0.text=\n\ Launch\ the\ application.\n
+comment0.text=\r\n\ Launch\ the\ application.\r\n
 comment1.params=
 comment1.target=void\ run()
 comment10.params=e
@@ -26,7 +26,7 @@ comment19.params=e
 comment19.target=void\ mouseClicked(java.awt.event.MouseEvent)
 comment2.params=
 comment2.target=MinesweeperGUI()
-comment2.text=\n\ Create\ the\ application.\n
+comment2.text=\r\n\ Create\ the\ application.\r\n
 comment20.params=r\ c
 comment20.target=void\ quickShow(int,\ int)
 comment21.params=r\ c
@@ -35,7 +35,7 @@ comment22.params=
 comment22.target=void\ checkWin()
 comment3.params=
 comment3.target=void\ initialize()
-comment3.text=\n\ Initialize\ the\ contents\ of\ the\ frame.\n
+comment3.text=\r\n\ Initialize\ the\ contents\ of\ the\ frame.\r\n
 comment4.params=e
 comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment5.params=e

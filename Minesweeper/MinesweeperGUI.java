@@ -43,7 +43,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     private boolean first; //first click pressed or not
     private boolean over; //game over or not
-    
+
     private ImageIcon flag;
 
     private MinesweeperBoard logic;
@@ -138,9 +138,10 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         info.add(mineLabel,BorderLayout.EAST);
 
         frmMinesweeper.add(info,BorderLayout.SOUTH);
-        
+
         //icons
         flag = new ImageIcon(getClass().getResource("/images/flag.png"));
+        
 
         //all menu stuff is auto generated
         //main menu bar
@@ -392,6 +393,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     //mouse
     public void mouseClicked(MouseEvent e){
         //right click
+        Image img = flag.getImage() ;  
+        Image newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;  
+        flag = new ImageIcon( newimg );
         if(!over){
             if(e.getButton() == MouseEvent.BUTTON3){
                 for(int r = 0; r < tiles.length; r++){
@@ -457,16 +461,21 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         }
         return counter;
     }
-    
+
     public void checkWin(){
         boolean win = true;
         for(int r = 0; r < tiles.length; r++){
-            for(int c = 0; r < tiles[0].length; c++){
+            for(int c = 0; c < tiles[0].length; c++){
                 if(tiles[r][c].getIcon() != null){
                     if(tiles[r][c].getIcon().equals(flag)){
                         if(logic.getValue(r,c) != 9){
                             win = false;
                         }
+                    }
+                }
+                else{
+                    if(!tiles[r][c].isSelected()){
+                        win = false;
                     }
                 }
             }
