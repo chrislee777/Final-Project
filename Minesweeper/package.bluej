@@ -2,6 +2,7 @@
 dependency1.from=MinesweeperGUI
 dependency1.to=MinesweeperBoard
 dependency1.type=UsesDependency
+<<<<<<< HEAD
 dependency2.from=TimeTest
 dependency2.to=FileWrite
 dependency2.type=UsesDependency
@@ -13,16 +14,33 @@ package.editor.x=1127
 package.editor.y=224
 package.numDependencies=2
 package.numTargets=5
+=======
+objectbench.height=76
+objectbench.width=670
+package.editor.height=400
+package.editor.width=572
+package.editor.x=623
+package.editor.y=28
+package.numDependencies=1
+package.numTargets=4
+>>>>>>> 281dc6928f6ea9d69aa34c92009d5cfb550a082c
 package.showExtends=true
 package.showUses=true
 project.charset=UTF-8
 target1.editor.height=700
 target1.editor.width=900
+<<<<<<< HEAD
 target1.editor.x=1168
 target1.editor.y=164
 target1.height=50
 target1.name=FileWrite
 target1.naviview.expanded=false
+=======
+target1.editor.x=207
+target1.editor.y=49
+target1.height=50
+target1.name=FileWrite
+>>>>>>> 281dc6928f6ea9d69aa34c92009d5cfb550a082c
 target1.showInterface=false
 target1.type=ClassTarget
 target1.typeParameters=
@@ -34,20 +52,27 @@ target2.editor.width=1104
 target2.editor.x=232
 target2.editor.y=74
 target2.height=50
-target2.name=TextFileTest
+target2.name=MinesweeperBoard
 target2.naviview.expanded=false
 target2.showInterface=false
 target2.type=ClassTarget
 target2.typeParameters=
-target2.width=100
+target2.width=140
 target2.x=70
 target2.y=70
+<<<<<<< HEAD
 target3.editor.height=662
 target3.editor.width=889
 target3.editor.x=303
 target3.editor.y=45
+=======
+target3.editor.height=578
+target3.editor.width=1046
+target3.editor.x=103
+target3.editor.y=90
+>>>>>>> 281dc6928f6ea9d69aa34c92009d5cfb550a082c
 target3.height=50
-target3.name=MinesweeperBoard
+target3.name=MinesweeperGUI
 target3.naviview.expanded=false
 target3.showInterface=false
 target3.type=ClassTarget
@@ -55,6 +80,7 @@ target3.typeParameters=
 target3.width=130
 target3.x=10
 target3.y=130
+<<<<<<< HEAD
 target4.editor.height=700
 target4.editor.width=900
 target4.editor.x=374
@@ -81,3 +107,13 @@ target5.typeParameters=
 target5.width=100
 target5.x=70
 target5.y=10
+=======
+target4.height=50
+target4.name=TextFileTest
+target4.showInterface=false
+target4.type=ClassTarget
+target4.typeParameters=
+target4.width=100
+target4.x=70
+target4.y=10
+>>>>>>> 281dc6928f6ea9d69aa34c92009d5cfb550a082c
