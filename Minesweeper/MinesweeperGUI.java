@@ -21,7 +21,9 @@ import javax.swing.JRadioButtonMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import java.util.*;
 
@@ -164,6 +166,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                     restart();
                 }
             });
+        mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(' ')); //http://stackoverflow.com/questions/13366793/how-do-you-make-menu-item-jmenuitem-shortcut
         mnNewMenu.add(mntmNewMenuItem);
 
         JMenuItem mntmStatistics = new JMenuItem("Statistics");
@@ -275,12 +278,12 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     // :(
     public void gameOver(){
-        
+
         over = true;
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
                 if(logic.getValue(r,c) == 9){
-                    
+
                     if(tiles[r][c].getIcon() != null){
                     }
                     else{
@@ -534,7 +537,6 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         img = flagMine.getImage() ; 
         newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;
         flagMine = new ImageIcon( newimg );
-        
-        
+
     }
 }
