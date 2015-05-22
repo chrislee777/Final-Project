@@ -275,6 +275,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
 
     // :(
     public void gameOver(){
+        
         over = true;
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
@@ -434,6 +435,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     //if user clicks on a number, quickly reveals surrounding buttons
     public void quickShow(int r, int c){
         int flags = logic.getValue(r,c);
+        boolean asdf = false; //game over temp var
         if(surroundingFlags(r,c) == flags){
             for(int row = Math.max(0,r -1); row <= Math.min(height-1,r +1); row++){
                 for(int col = Math.max(0,c -1); col <= Math.min(width-1,c +1); col++){
@@ -442,7 +444,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                             //resizeIcons();
                             tiles[row][col].setIcon(wrongMine);
                             tiles[row][col].setSelected(true);
-                            gameOver();
+                            asdf = true;
                         }
                         else if(logic.getValue(row,col)!=0){
                             tiles[row][col].setText(""+logic.getValue(row,col));
@@ -457,7 +459,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
                             //resizeIcons();
                             tiles[row][col].setIcon(flagMine);
                             tiles[row][col].setSelected(true);
-                            gameOver();
+                            asdf = true;
                         }
                     }
                 }
@@ -465,6 +467,9 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
         }
         else{
             tiles[r][c].setSelected(true);
+        }
+        if(asdf){
+            gameOver();
         }
     }
 
@@ -500,7 +505,7 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
             }
         }
         if(win){
-            JOptionPane.showMessageDialog(null, "You win!!!");
+            JOptionPane.showMessageDialog(null, "You win!!! \nYour time: "+ time);
             restart();
         }
     }
