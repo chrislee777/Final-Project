@@ -514,6 +514,12 @@ public class MinesweeperGUI extends MouseAdapter implements ActionListener{
     }
 
     public void resizeIcons(){
+        flag = new ImageIcon(getClass().getResource("/images/flag.png"));
+        mineIcon = new ImageIcon(getClass().getResource("/images/mine.png"));
+        wrongMine = new ImageIcon(getClass().getResource("/images/redMine.png"));
+        flagMine = new ImageIcon(getClass().getResource("/images/wrongMine.png"));
+        
+        
         //http://www.coderanch.com/t/331731/GUI/java/Resize-ImageIcon
         Image img = flag.getImage() ;  
         Image newimg = img.getScaledInstance( tiles[0][0].getWidth(), tiles[0][0].getHeight(),  java.awt.Image.SCALE_SMOOTH ) ;  
