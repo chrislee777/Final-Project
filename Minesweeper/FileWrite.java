@@ -1,90 +1,59 @@
 import java.io.*;
-import java.io.FileReader;
-import java.util.Date;
+import java.util.*;
 
 public class FileWrite 
 {
-    private int numGames;
-    private int numWins;
-    private FileWriter fstream;
-    private BufferedWriter out;
-    private int bestTime;
+    private int games, wins, atime, best;
+    FileOutputStream fos;
+    BufferedWriter bufferedWriter;
     public FileWrite()
     {
         try{
-            // Create file 
-            FileWriter fstream = new FileWriter(System.currentTimeMillis() + "out.txt");
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write("Statistics");
-            out.newLine();
-            //Close the output stream
-            out.close();
+            File file =new File("Statistics");
+ 
+    		//if file doesnt exists, then create it
+    		if(!file.exists()){
+    			file.createNewFile();
+    			
+    		}
+            Scanner sc = new Scanner(file);
+            games=sc.nextInt();
+            wins=sc.nextInt();
+            atime=sc.nextInt();
+            best=sc.nextInt();
+            
+            fos=new FileOutputStream(file, true);
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(fos));
+            
         }catch (Exception e){//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void addWin(int time){
-        //writes "W" into file for every win, adds time next to it
-        try{
-            out.write("W: "+time);
-            out.newLine();
-            out.close();
-        }catch (Exception e){//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
+    public void addWin(int time) throws IOException{
+        File file =new File("Statistics");
+        fos=new FileOutputStream(file, true);
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(fos));
+        games++;
+        wins++;
+        atime=(atime*wins+time)/(wins+1);
+        if (time<best){
+            best=time;
         }
+        bufferedWriter.write(games);
+        bufferedWriter.newLine();
+        bufferedWriter.write(wins);
+        bufferedWriter.newLine();
+        bufferedWriter.write(atime);
+        bufferedWriter.newLine();
+        bufferedWriter.write(best);        
     }
 
-    public void addLoss(){
-        //writes "L" into file for every loss
-        try{
-            out.write("L");
-            out.newLine();
-        }catch (Exception e){//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
-        }
+    public void addLoss() throws IOException{
+        games++;
+        bufferedWriter.write(games);
+        bufferedWriter.newLine();
     }
 
-    public void getWinPercent(){
-        int wins=0;
-        int losses=0;
-        double winPercent=0;
-        try (BufferedReader br = new BufferedReader(new FileReader("StatsReader"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // process the line.
-                if(br.readLine().substring(0,1).equals("W")){
-                    wins++;
-                }
-                else if(br.readLine().substring(0,1).equals("L")){
-                    losses++;
-                }
-            }
-            winPercent=(double) wins/(double) losses;
-            out.write("Win Percentage: "+winPercent);
-        }catch (Exception e){//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
-
-    public void getBestTime(){
-        //reads file line by line to determine best time
-        int bestTime=Integer.MAX_VALUE;
-        try (BufferedReader br = new BufferedReader(new FileReader("StatsReader"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // process the line.
-                if(br.readLine().substring(0,1).equals("W")){
-                    if(Integer.parseInt(br.readLine().substring(3))<bestTime){
-                        bestTime=Integer.parseInt(br.readLine().substring(3));
-                    }
-                }
-            }
-            out.write("Best Time: "+bestTime);
-        }catch (Exception e){//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
-        }
-
-    }
-
+    
 }
